@@ -173,8 +173,7 @@
       const link = firstHttpUrl(rawInput.value);
       if(!link){ statusEl.textContent = '未检测到 URL，请粘贴包含 http/https 的文本'; return; }
 
-      const endpoint = `./api/waterremove?link=${encodeURIComponent(link)}`;
-
+      const endpoint = `${location.origin}/api/waterremove?link=${encodeURIComponent(link)}`;
       statusEl.textContent = '解析中…';
       parseBtn.disabled = true; parseBtn.textContent = '解析中…';
 
