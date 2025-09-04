@@ -1,0 +1,5 @@
+# secrets
+.env
+.env.*
+config.js
+.DS_Store
