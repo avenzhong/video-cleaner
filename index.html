@@ -48,7 +48,8 @@
   <header class="mx-auto max-w-4xl px-4 pt-8 pb-4">
     <h1 class="text-2xl font-bold tracking-tight">去水印下载</h1>
     <p class="text-sm text-neutral-500 mt-1">粘贴任意混杂文本，我会自动 <span class="font-medium">正则提取</span> 第一个
-      <code>http(s)</code> 链接并解析。</p>
+      <code>http(s)</code> 链接并解析。
+    </p>
   </header>
 
   <main class="mx-auto max-w-4xl px-4 pb-16">
@@ -285,30 +286,29 @@
     dlVideoBtn.addEventListener('click', async () => {
       const url = videoUrlEl.value;
       if (!url) return;
-      dlVideoBtn.textContent = '下载中…';
-      dlVideoBtn.disabled = true;
+      const dl = `${location.origin}/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent('video.mp4')}`;
+      dlVideoBtn.textContent = '下载中…'; dlVideoBtn.disabled = true;
       try {
-        await downloadFile(url, `video_${Date.now()}.mp4`);
+        // 直接新开下载（避免被浏览器拦截，尽量由用户手势触发）
+        window.open(dl, '_blank', 'noopener');
       } catch (e) {
-        alert('下载失败：' + (e?.message || e) + '\n已尝试自动在新标签页打开，如未弹出请手动复制链接下载');
+        alert('下载失败：' + (e?.message || e));
       } finally {
-        dlVideoBtn.textContent = '下载视频';
-        dlVideoBtn.disabled = false;
+        dlVideoBtn.textContent = '下载视频'; dlVideoBtn.disabled = false;
       }
     });
 
     dlCoverBtn.addEventListener('click', async () => {
       const url = coverUrlEl.value;
       if (!url) return;
-      dlCoverBtn.textContent = '下载中…';
-      dlCoverBtn.disabled = true;
+      const dl = `${location.origin}/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent('cover.jpg')}`;
+      dlCoverBtn.textContent = '下载中…'; dlCoverBtn.disabled = true;
       try {
-        await downloadFile(url, `cover_${Date.now()}.jpg`);
+        window.open(dl, '_blank', 'noopener');
       } catch (e) {
-        alert('下载失败：' + (e?.message || e) + '\n已尝试自动在新标签页打开，如未弹出请手动复制链接下载');
+        alert('下载失败：' + (e?.message || e));
       } finally {
-        dlCoverBtn.textContent = '下载封面';
-        dlCoverBtn.disabled = false;
+        dlCoverBtn.textContent = '下载封面'; dlCoverBtn.disabled = false;
       }
     });
   </script>
