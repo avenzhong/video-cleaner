@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,14 +8,26 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <meta name="color-scheme" content="light dark" />
   <style>
-    :root { --bg: 247 247 248; --fg: 17 24 39; }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: 17 17 20; --fg: 229 231 235; }
+    :root {
+      --bg: 247 247 248;
+      --fg: 17 24 39;
     }
-    body { background-color: rgb(var(--bg)); color: rgb(var(--fg)); }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: 17 17 20;
+        --fg: 229 231 235;
+      }
+    }
+
+    body {
+      background-color: rgb(var(--bg));
+      color: rgb(var(--fg));
+    }
   </style>
   <script src="config.js"></script>
 </head>
+
 <body class="min-h-screen">
   <!-- 密码层 -->
   <div id="gate" class="fixed inset-0 flex items-center justify-center bg-black/60">
@@ -22,8 +35,11 @@
       <h1 class="text-xl font-semibold">进入页面</h1>
       <p class="text-sm text-neutral-500">本页暂不开放注册登录，使用固定密码访问。</p>
       <label class="block text-sm font-medium">密码</label>
-      <input id="pwd" type="password" class="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="输入密码" />
-      <button id="enterBtn" class="w-full rounded-xl bg-indigo-600 text-white py-2.5 font-medium hover:bg-indigo-500 active:scale-[.99]">进入</button>
+      <input id="pwd" type="password"
+        class="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        placeholder="输入密码（123456）" />
+      <button id="enterBtn"
+        class="w-full rounded-xl bg-indigo-600 text-white py-2.5 font-medium hover:bg-indigo-500 active:scale-[.99]">进入</button>
       <p id="gateMsg" class="text-sm text-rose-500"></p>
     </div>
   </div>
@@ -31,23 +47,29 @@
   <!-- 应用主体 -->
   <header class="mx-auto max-w-4xl px-4 pt-8 pb-4">
     <h1 class="text-2xl font-bold tracking-tight">去水印下载</h1>
-    <p class="text-sm text-neutral-500 mt-1">粘贴任意混杂文本，我会自动 <span class="font-medium">正则提取</span> 第一个 <code>http(s)</code> 链接并解析。</p>
+    <p class="text-sm text-neutral-500 mt-1">粘贴任意混杂文本，我会自动 <span class="font-medium">正则提取</span> 第一个
+      <code>http(s)</code> 链接并解析。</p>
   </header>
 
   <main class="mx-auto max-w-4xl px-4 pb-16">
-    <section class="rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm p-4 md:p-6 space-y-4">
+    <section
+      class="rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm p-4 md:p-6 space-y-4">
       <div class="space-y-2">
         <label for="rawInput" class="block text-sm font-medium">粘贴分享文案 / 链接</label>
-        <textarea id="rawInput" class="w-full h-32 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="示例：4.89 03/24 cNJ:/ K@W.md 随意… https://v.douyin.com/ZOqdo9qsYuY/ 复制此链接…"></textarea>
+        <textarea id="rawInput"
+          class="w-full h-32 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          placeholder="示例：4.89 03/24 cNJ:/ K@W.md 随意… https://v.douyin.com/ZOqdo9qsYuY/ 复制此链接…"></textarea>
         <div class="flex items-center gap-2 text-xs text-neutral-500">
           <span>将自动提取第一个 URL →</span>
           <code id="extracted" class="px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800">(尚未提取)</code>
-          <button id="copyUrlBtn" class="ml-auto inline-flex items-center gap-1 rounded-lg border border-neutral-200 dark:border-neutral-700 px-2.5 py-1 hover:bg-neutral-50 dark:hover:bg-neutral-800">复制URL</button>
+          <button id="copyUrlBtn"
+            class="ml-auto inline-flex items-center gap-1 rounded-lg border border-neutral-200 dark:border-neutral-700 px-2.5 py-1 hover:bg-neutral-50 dark:hover:bg-neutral-800">复制URL</button>
         </div>
       </div>
 
       <div class="flex items-center justify-between gap-3">
-        <button id="parseBtn" class="w-full rounded-xl bg-indigo-600 text-white py-2.5 font-medium hover:bg-indigo-500 active:scale-[.99]">开始解析</button>
+        <button id="parseBtn"
+          class="w-full rounded-xl bg-indigo-600 text-white py-2.5 font-medium hover:bg-indigo-500 active:scale-[.99]">开始解析</button>
       </div>
 
       <p id="hint" class="text-xs text-neutral-500">接口：<code>/api/waterremove?link=解析到的URL</code>（服务端代理，避免泄露 ak）</p>
@@ -55,10 +77,12 @@
     </section>
 
     <!-- 解析结果 -->
-    <section id="resultCard" class="mt-6 hidden rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm overflow-hidden">
+    <section id="resultCard"
+      class="mt-6 hidden rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm overflow-hidden">
       <div class="p-4 md:p-6 space-y-4">
         <div class="flex items-start gap-4">
-          <img id="coverImg" src="" alt="封面" class="w-28 h-16 object-cover rounded-lg border border-neutral-200 dark:border-neutral-800" />
+          <img id="coverImg" src="" alt="封面"
+            class="w-28 h-16 object-cover rounded-lg border border-neutral-200 dark:border-neutral-800" />
           <div class="min-w-0">
             <h2 id="title" class="font-semibold text-lg truncate">—</h2>
             <div class="text-xs text-neutral-500 space-x-2 mt-1">
@@ -71,18 +95,26 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="space-y-2">
             <label class="text-sm font-medium">视频地址</label>
-            <input id="videoUrl" class="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 text-sm" readonly />
+            <input id="videoUrl"
+              class="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 text-sm"
+              readonly />
             <div class="flex gap-2">
-              <button id="copyVideoBtn" class="rounded-lg border border-neutral-200 dark:border-neutral-700 px-3 py-1.5 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800">复制地址</button>
-              <button id="dlVideoBtn" class="rounded-lg bg-indigo-600 text-white px-3 py-1.5 text-sm hover:bg-indigo-500">下载视频</button>
+              <button id="copyVideoBtn"
+                class="rounded-lg border border-neutral-200 dark:border-neutral-700 px-3 py-1.5 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800">复制地址</button>
+              <button id="dlVideoBtn"
+                class="rounded-lg bg-indigo-600 text-white px-3 py-1.5 text-sm hover:bg-indigo-500">下载视频</button>
             </div>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium">封面地址</label>
-            <input id="coverUrl" class="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 text-sm" readonly />
+            <input id="coverUrl"
+              class="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-transparent px-3 py-2 text-sm"
+              readonly />
             <div class="flex gap-2">
-              <button id="copyCoverBtn" class="rounded-lg border border-neutral-200 dark:border-neutral-700 px-3 py-1.5 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800">复制地址</button>
-              <button id="dlCoverBtn" class="rounded-lg bg-neutral-800 text-white px-3 py-1.5 text-sm hover:bg-neutral-700">下载封面</button>
+              <button id="copyCoverBtn"
+                class="rounded-lg border border-neutral-200 dark:border-neutral-700 px-3 py-1.5 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800">复制地址</button>
+              <button id="dlCoverBtn"
+                class="rounded-lg bg-neutral-800 text-white px-3 py-1.5 text-sm hover:bg-neutral-700">下载封面</button>
             </div>
           </div>
         </div>
@@ -99,38 +131,60 @@
 
   <script>
     // —— 密码门禁 ——
-    (function gateKeeper(){
+    (function gateKeeper() {
       const PASS = "123456"; // 固定密码
       const gate = document.getElementById('gate');
       const pwd = document.getElementById('pwd');
       const btn = document.getElementById('enterBtn');
       const msg = document.getElementById('gateMsg');
-      function enter(){
-        if(pwd.value === PASS){ gate.classList.add('hidden'); }
+      function enter() {
+        if (pwd.value === PASS) { gate.classList.add('hidden'); }
         else { msg.textContent = '密码错误'; pwd.focus(); }
       }
       btn.addEventListener('click', enter);
-      pwd.addEventListener('keydown', e=>{ if(e.key==='Enter'){ enter(); }});
+      pwd.addEventListener('keydown', e => { if (e.key === 'Enter') { enter(); } });
     })();
 
     // —— 工具函数 ——
-    const $ = (id)=>document.getElementById(id);
-    function firstHttpUrl(text){
-      if(!text) return '';
+    const $ = (id) => document.getElementById(id);
+    function firstHttpUrl(text) {
+      if (!text) return '';
       const match = text.match(/https?:\/\/[\w\-._~:/?#\[\]@!$&'()*+,;=%]+/i);
-      return match ? match[0].replace(/\u200b|\u2006|\s+$/g,'').replace(/"|'|\)$/, '') : '';
+      return match ? match[0].replace(/\u200b|\u2006|\s+$/g, '').replace(/"|'|\)$/, '') : '';
     }
-    async function blobDownload(url, filename){
-      const res = await fetch(url, {mode: 'cors'});
-      if(!res.ok) throw new Error('下载失败 ' + res.status);
-      const blob = await res.blob();
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      URL.revokeObjectURL(a.href);
-      a.remove();
+    async function downloadFile(url, filename) {
+      try {
+        const u = new URL(url);
+        // 对跨域资源优先采用“直接导航/新标签下载”，规避 CORS 403
+        if (u.origin !== location.origin) {
+          const a = document.createElement('a');
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          // download 对跨域可能被忽略，但不影响新标签下载
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          return;
+        }
+        // 同源时走 blob 方式
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        URL.revokeObjectURL(a.href);
+        a.remove();
+      } catch (e) {
+        // 兜底：仍然尝试在新标签打开
+        try { window.open(url, '_blank', 'noopener'); }
+        catch (_) { }
+        throw e;
+      }
     }
 
     // —— DOM 元素 ——
@@ -154,25 +208,25 @@
     const rawJsonEl = $('rawJson');
 
     // —— 输入时自动提取 URL ——
-    function updateExtract(){
+    function updateExtract() {
       const url = firstHttpUrl(rawInput.value);
       extracted.textContent = url || '(尚未提取)';
     }
     rawInput.addEventListener('input', updateExtract);
     updateExtract();
 
-    copyUrlBtn.addEventListener('click', async ()=>{
+    copyUrlBtn.addEventListener('click', async () => {
       const url = extracted.textContent;
-      if(!url || url==='(尚未提取)') return;
+      if (!url || url === '(尚未提取)') return;
       await navigator.clipboard.writeText(url);
       copyUrlBtn.textContent = '已复制';
-      setTimeout(()=>copyUrlBtn.textContent='复制URL',1200);
+      setTimeout(() => copyUrlBtn.textContent = '复制URL', 1200);
     });
 
     // —— 解析按钮 ——
-    parseBtn.addEventListener('click', async ()=>{
+    parseBtn.addEventListener('click', async () => {
       const link = firstHttpUrl(rawInput.value);
-      if(!link){ statusEl.textContent = '未检测到 URL，请粘贴包含 http/https 的文本'; return; }
+      if (!link) { statusEl.textContent = '未检测到 URL，请粘贴包含 http/https 的文本'; return; }
 
       const endpoint = `${location.origin}/api/waterremove?link=${encodeURIComponent(link)}&_ts=${Date.now()}`;
 
@@ -181,18 +235,18 @@
 
       try {
         const res = await fetch(endpoint, { cache: 'no-store' });
-let data;
-if (res.status === 304) {
-  const res2 = await fetch(`${endpoint}&_=${Date.now()}`, { cache: 'no-store' });
-  if (!res2.ok) throw new Error('HTTP ' + res2.status);
-  data = await res2.json();
-} else {
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  data = await res.json();
-}
+        let data;
+        if (res.status === 304) {
+          const res2 = await fetch(`${endpoint}&_=${Date.now()}`, { cache: 'no-store' });
+          if (!res2.ok) throw new Error('HTTP ' + res2.status);
+          data = await res2.json();
+        } else {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          data = await res.json();
+        }
         rawJsonEl.textContent = JSON.stringify(data, null, 2);
 
-        if(data.code !== '10000' || !data.content || data.content.success === false){
+        if (data.code !== '10000' || !data.content || data.content.success === false) {
           throw new Error(data.msg || '解析失败');
         }
         const c = data.content;
@@ -206,7 +260,7 @@ if (res.status === 304) {
 
         resultCard.classList.remove('hidden');
         statusEl.textContent = '解析成功';
-      } catch (err){
+      } catch (err) {
         console.error(err);
         statusEl.textContent = '解析出错：' + err.message;
       } finally {
@@ -215,36 +269,49 @@ if (res.status === 304) {
     });
 
     // —— 复制与下载 ——
-    copyVideoBtn.addEventListener('click', async()=>{
-      if(!videoUrlEl.value) return;
+    copyVideoBtn.addEventListener('click', async () => {
+      if (!videoUrlEl.value) return;
       await navigator.clipboard.writeText(videoUrlEl.value);
       copyVideoBtn.textContent = '已复制';
-      setTimeout(()=>copyVideoBtn.textContent='复制地址',1200);
+      setTimeout(() => copyVideoBtn.textContent = '复制地址', 1200);
     });
-    copyCoverBtn.addEventListener('click', async()=>{
-      if(!coverUrlEl.value) return;
+    copyCoverBtn.addEventListener('click', async () => {
+      if (!coverUrlEl.value) return;
       await navigator.clipboard.writeText(coverUrlEl.value);
       copyCoverBtn.textContent = '已复制';
-      setTimeout(()=>copyCoverBtn.textContent='复制地址',1200);
+      setTimeout(() => copyCoverBtn.textContent = '复制地址', 1200);
     });
 
-    dlVideoBtn.addEventListener('click', async()=>{
-      const url = videoUrlEl.value; if(!url) return;
-      dlVideoBtn.textContent = '下载中…'; dlVideoBtn.disabled = true;
-      try{
-        await blobDownload(url, `video_${Date.now()}.mp4`);
-      }catch(e){ alert('下载失败：' + e.message + '\n可尝试右键新窗口打开原地址下载'); }
-      finally{ dlVideoBtn.textContent='下载视频'; dlVideoBtn.disabled = false; }
+    dlVideoBtn.addEventListener('click', async () => {
+      const url = videoUrlEl.value;
+      if (!url) return;
+      dlVideoBtn.textContent = '下载中…';
+      dlVideoBtn.disabled = true;
+      try {
+        await downloadFile(url, `video_${Date.now()}.mp4`);
+      } catch (e) {
+        alert('下载失败：' + (e?.message || e) + '\n已尝试自动在新标签页打开，如未弹出请手动复制链接下载');
+      } finally {
+        dlVideoBtn.textContent = '下载视频';
+        dlVideoBtn.disabled = false;
+      }
     });
 
-    dlCoverBtn.addEventListener('click', async()=>{
-      const url = coverUrlEl.value; if(!url) return;
-      dlCoverBtn.textContent = '下载中…'; dlCoverBtn.disabled = true;
-      try{
-        await blobDownload(url, `cover_${Date.now()}.jpg`);
-      }catch(e){ alert('下载失败：' + e.message + '\n可尝试右键新窗口打开原地址下载'); }
-      finally{ dlCoverBtn.textContent='下载封面'; dlCoverBtn.disabled = false; }
+    dlCoverBtn.addEventListener('click', async () => {
+      const url = coverUrlEl.value;
+      if (!url) return;
+      dlCoverBtn.textContent = '下载中…';
+      dlCoverBtn.disabled = true;
+      try {
+        await downloadFile(url, `cover_${Date.now()}.jpg`);
+      } catch (e) {
+        alert('下载失败：' + (e?.message || e) + '\n已尝试自动在新标签页打开，如未弹出请手动复制链接下载');
+      } finally {
+        dlCoverBtn.textContent = '下载封面';
+        dlCoverBtn.disabled = false;
+      }
     });
   </script>
 </body>
+
 </html>
