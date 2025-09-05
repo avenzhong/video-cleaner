@@ -13,6 +13,7 @@
     }
     body { background-color: rgb(var(--bg)); color: rgb(var(--fg)); }
   </style>
+  <script src="config.js"></script>
 </head>
 <body class="min-h-screen">
   <!-- 密码层 -->
@@ -49,7 +50,7 @@
         <button id="parseBtn" class="w-full rounded-xl bg-indigo-600 text-white py-2.5 font-medium hover:bg-indigo-500 active:scale-[.99]">开始解析</button>
       </div>
 
-      <p id="hint" class="text-xs text-neutral-500"></code></p>
+      <p id="hint" class="text-xs text-neutral-500">接口：<code>/api/waterremove?link=解析到的URL</code>（服务端代理，避免泄露 ak）</p>
       <p id="status" class="text-sm text-neutral-500"></p>
     </section>
 
@@ -173,14 +174,22 @@
       const link = firstHttpUrl(rawInput.value);
       if(!link){ statusEl.textContent = '未检测到 URL，请粘贴包含 http/https 的文本'; return; }
 
-      const endpoint = `${location.origin}/api/waterremove?link=${encodeURIComponent(link)}`;
+      const endpoint = `${location.origin}/api/waterremove?link=${encodeURIComponent(link)}&_ts=${Date.now()}`;
+
       statusEl.textContent = '解析中…';
       parseBtn.disabled = true; parseBtn.textContent = '解析中…';
 
       try {
-        const res = await fetch(endpoint);
-        if(!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
+        const res = await fetch(endpoint, { cache: 'no-store' });
+let data;
+if (res.status === 304) {
+  const res2 = await fetch(`${endpoint}&_=${Date.now()}`, { cache: 'no-store' });
+  if (!res2.ok) throw new Error('HTTP ' + res2.status);
+  data = await res2.json();
+} else {
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  data = await res.json();
+}
         rawJsonEl.textContent = JSON.stringify(data, null, 2);
 
         if(data.code !== '10000' || !data.content || data.content.success === false){
