@@ -1,22 +1,43 @@
 // api/waterremove.js
-export default async function handler(req, res) {
+export const config = { runtime: "edge" };
+
+export default async function handler(request) {
   try {
-    const { link } = req.query;
-    if (!link) return res.status(400).json({ error: "missing link" });
+    const url = new URL(request.url);
+    const link = url.searchParams.get("link");
+    if (!link) {
+      return new Response(JSON.stringify({ error: "missing link" }), {
+        status: 400,
+        headers: { "content-type": "application/json" },
+      });
+    }
 
     const ak = process.env.API_KEY;
-    if (!ak) return res.status(500).json({ error: "server missing API_KEY" });
+    if (!ak) {
+      return new Response(JSON.stringify({ error: "server missing API_KEY" }), {
+        status: 500,
+        headers: { "content-type": "application/json" },
+      });
+    }
 
     const upstream = `https://api.guijianpan.com/waterRemoveDetail/xxmQsyByAk?ak=${encodeURIComponent(ak)}&link=${encodeURIComponent(link)}`;
 
-    const r = await fetch(upstream, { headers: { accept: "application/json" } });
-    const body = await r.text(); // 直接透传文本，避免多次序列化
-    // 关键：禁止缓存，防 304
-    res.setHeader("Cache-Control", "private, no-store, max-age=0, must-revalidate");
-    res.setHeader("Content-Type", "application/json; charset=utf-8");
-    return res.status(r.status).send(body);
+    const r = await fetch(upstream, {
+      headers: { accept: "application/json" },
+      cache: "no-store",
+    });
+
+    return new Response(r.body, {
+      status: r.status,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "private, no-store, max-age=0, must-revalidate",
+      },
+    });
   } catch (e) {
-    res.setHeader("Cache-Control", "private, no-store, max-age=0, must-revalidate");
-    return res.status(500).json({ error: e.message });
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+      headers: { "content-type": "application/json" },
+    });
   }
 }
