@@ -286,7 +286,9 @@
     dlVideoBtn.addEventListener('click', async () => {
       const url = videoUrlEl.value;
       if (!url) return;
-      const dl = `${location.origin}/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent('video.mp4')}`;
+      // 视频
+      const dl = `${location.origin}/api/download?url=${encodeURIComponent(videoUrlEl.value)}&filename=${encodeURIComponent('video.mp4')}&_ts=${Date.now()}`;
+      window.open(dl, '_blank', 'noopener');
       dlVideoBtn.textContent = '下载中…'; dlVideoBtn.disabled = true;
       try {
         // 直接新开下载（避免被浏览器拦截，尽量由用户手势触发）
@@ -301,7 +303,9 @@
     dlCoverBtn.addEventListener('click', async () => {
       const url = coverUrlEl.value;
       if (!url) return;
-      const dl = `${location.origin}/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent('cover.jpg')}`;
+      // 封面
+      const dl2 = `${location.origin}/api/download?url=${encodeURIComponent(coverUrlEl.value)}&filename=${encodeURIComponent('cover.jpg')}&_ts=${Date.now()}`;
+      window.open(dl2, '_blank', 'noopener'); 
       dlCoverBtn.textContent = '下载中…'; dlCoverBtn.disabled = true;
       try {
         window.open(dl, '_blank', 'noopener');
